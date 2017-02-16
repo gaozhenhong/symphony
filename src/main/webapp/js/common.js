@@ -1275,9 +1275,22 @@ var Util = {
                         var reader = new FileReader();
                         reader.readAsArrayBuffer(data.files[0]);
                         reader.onload = function (evt) {
-                            var fileBuf = new Uint8Array(evt.target.result.slice(0, 11));
+                        	var fileBuf="";
+                        	try{
+                        		if(evt.target.result.slice){
+                                     fileBuf = new Uint8Array(evt.target.result.slice(0, 11));
+                        		}else if(evt.target.result.mozSlice){
+                        			 fileBuf = new Uint8Array(evt.target.result.mozSlice(0, 11));
+                        		}else if(evt.target.result.webkitSlice){
+                        			 fileBuf = new Uint8Array(evt.target.result.webkitSlice(0, 11));
+                        		}else{
+                        			  data.submit();
+                        		}
+                        	} catch (e) {
+                        		  data.submit();
+                        	}
+                            
                             isImg = isImage(fileBuf);
-
                             if (isImg && evt.target.result.byteLength > obj.imgMaxSize) {
                                 alert("This image is too large (max " + obj.imgMaxSize / 1024 / 1024 + "M)");
 
