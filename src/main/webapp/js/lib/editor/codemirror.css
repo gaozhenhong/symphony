@@ -507,6 +507,13 @@ span.CodeMirror-selectedtext { background: none; }
 /* this is the title */
 .editor-toolbar {
     background-color: #f2f2f2;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -o-flex;
+    display: -ms-flex;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: flexbox;
     display: flex;
     position: relative;
 }
