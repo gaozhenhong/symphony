@@ -1332,6 +1332,12 @@ var Util = {
                     if (obj.editor.replaceRange) {
                         var cursor = obj.editor.getCursor();
                         filename = data.result.name;
+                        if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(filename)) {
+                        	isImg = false;
+                        }else{
+                        	isImg = true;
+                        }
+                        
                         if (isImg) {
                             obj.editor.replaceRange('![' + filename + '](' + filePath + ') \n\n',
                                     CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);

@@ -4494,6 +4494,7 @@
 
     // Clip the change to the size of this doc
     if (change.from.line < doc.first) {
+    	alert("1111111");
       var shift = change.text.length - 1 - (doc.first - change.from.line);
       shiftDoc(doc, shift);
       change = {from: Pos(doc.first, 0), to: Pos(change.to.line + shift, change.to.ch),
@@ -4501,6 +4502,7 @@
     }
     var last = doc.lastLine();
     if (change.to.line > last) {
+    	alert("2222222");
       change = {from: change.from, to: Pos(last, getLine(doc, last).text.length),
                 text: [change.text[0]], origin: change.origin};
     }

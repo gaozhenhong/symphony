@@ -403,6 +403,7 @@ var Comment = {
                     markdownText: cm.getValue()
                 },
                 success: function (result, textStatus) {
+                	alert("444"+result.html);
                     $('.article-comment-content .editor-preview-active').html(result.html);
                     hljs.initHighlighting.called = false;
                     hljs.initHighlighting();

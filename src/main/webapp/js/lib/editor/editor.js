@@ -1136,6 +1136,7 @@
                     markdownText: cm.getValue()
                 },
                 success: function (result, textStatus) {
+                	alert("1111"+result.html);
                     $(editor.element.parentElement).find('.editor-preview').html(result.html);
                     hljs.initHighlighting.called = false;
                     hljs.initHighlighting();
