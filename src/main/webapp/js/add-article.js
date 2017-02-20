@@ -279,6 +279,7 @@ var AddArticle = {
                 var change = "",
                         unitSep = String.fromCharCode(31), // Unit Separator (单元分隔符)
                         time = (new Date()).getTime() - thoughtTime;
+                
                 switch (changes[0].origin) {
                     case "+delete":
                         change = String.fromCharCode(24) + unitSep + time // cancel
@@ -288,8 +289,7 @@ var AddArticle = {
                         break;
                     case "*compose":
                     case "+input":
-                    default:
-                      
+                    default:                      
                         for (var i = 0; i < changes[0].text.length; i++) {
                             if (i === changes[0].text.length - 1) {
                                 change += changes[0].text[i];
@@ -302,14 +302,14 @@ var AddArticle = {
                                 change += String.fromCharCode(29); // group separator
                                 break;
                             }
-                        }
-                        
+                        }                      
                         change += unitSep + time
                                 + unitSep + changes[0].from.ch + '-' + changes[0].from.line
                                 + unitSep + changes[0].to.ch + '-' + changes[0].to.line
                                 + String.fromCharCode(30);  // Record Separator (记录分隔符)
                         break;
                 }
+                
                 postData.thoughtContent += change;
                 localStorage.postData = JSON.stringify(postData);
 
