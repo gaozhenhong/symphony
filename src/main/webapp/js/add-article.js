@@ -262,7 +262,6 @@ var AddArticle = {
 
             var thoughtTime = '';
             AddArticle.editor.on('changes', function (cm, changes) {
-            	alert("changes");
                 var postData = JSON.parse(localStorage.postData);
                 postData.content = cm.getValue();
 
@@ -280,7 +279,6 @@ var AddArticle = {
                 var change = "",
                         unitSep = String.fromCharCode(31), // Unit Separator (单元分隔符)
                         time = (new Date()).getTime() - thoughtTime;
-                alert("changes[0].origin"+changes[0].origin);
                 switch (changes[0].origin) {
                     case "+delete":
                         change = String.fromCharCode(24) + unitSep + time // cancel
@@ -294,32 +292,25 @@ var AddArticle = {
                       
                         for (var i = 0; i < changes[0].text.length; i++) {
                             if (i === changes[0].text.length - 1) {
-                            	  alert("1"+changes[0].text[i]);
                                 change += changes[0].text[i];
                             } else {
-                          	  alert("2"+changes[0].text[i] + String.fromCharCode(10));
                                 change += changes[0].text[i] + String.fromCharCode(10); // New Line
                             }
                         }
                         for (var j = 0; j < changes[0].removed.length; j++) {
                             if (j === 0) {
-                            	  alert("j==0"+String.fromCharCode(29));
                                 change += String.fromCharCode(29); // group separator
                                 break;
                             }
                         }
-                        alert("changes"+change);
                         
-                        alert("unitSep"+unitSep+"time"+time+"changes[0].from.ch"+changes[0].from.ch+"changes[0].from.line"+changes[0].from.line+"changes[0].to.ch"+changes[0].to.ch+"changes[0].to.line"+changes[0].to.line+"String.fromCharCode(30)"+String.fromCharCode(30));
                         change += unitSep + time
                                 + unitSep + changes[0].from.ch + '-' + changes[0].from.line
                                 + unitSep + changes[0].to.ch + '-' + changes[0].to.line
                                 + String.fromCharCode(30);  // Record Separator (记录分隔符)
                         break;
                 }
-                alert("changes"+change);
                 postData.thoughtContent += change;
-                alert("changes"+ postData.thoughtContent);
                 localStorage.postData = JSON.stringify(postData);
 
                 if ($('.article-content .editor-preview-active').length === 0) {
@@ -334,7 +325,6 @@ var AddArticle = {
                         markdownText: cm.getValue()
                     },
                     success: function (result, textStatus) {
-                    	alert("3333333333"+cm.getValue());
                         $('.article-content .editor-preview-active').html(result.html);
                         hljs.initHighlighting.called = false;
                         hljs.initHighlighting();
