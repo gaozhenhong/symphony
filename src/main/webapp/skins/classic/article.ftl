@@ -79,7 +79,7 @@
                                         &nbsp;•&nbsp;
                                         ${article.timeAgo}
                                         <#if article.clientArticlePermalink?? && 0 < article.clientArticlePermalink?length>
-                                        &nbsp;•&nbsp; <a href="${article.clientArticlePermalink}" target="_blank" rel="nofollow"><span class="ft-green">${sourceLabel}</span></a>
+                                        &nbsp;•&nbsp; <a href="${servePath}${article.clientArticlePermalink}" target="_blank" rel="nofollow"><span class="ft-green">${sourceLabel}</span></a>
                                         </#if>
                                     </span>
                                     <br/>
@@ -344,7 +344,7 @@
                                               style="background-image:url('${relevantArticle.articleAuthorThumbnailURL20}')"
                                         ></span>
                                         <#if "someone" != relevantArticle.articleAuthorName></a></#if>
-                                        <a rel="nofollow" class="title" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
+                                        <a rel="nofollow" class="title" href="${servePath}${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
                                         </li>
                                     </#list>
                                 </ul>
@@ -401,7 +401,7 @@
                                    aria-label="${randomArticle.articleAuthorName}"
                                    style="background-image:url('${randomArticle.articleAuthorThumbnailURL20}')"></span>
                                     <#if "someone" != randomArticle.articleAuthorName></a></#if>
-                                    <a class="title" rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
+                                    <a class="title" rel="nofollow" href="${servePath}${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
                                 </li>
                                 </#list>
                             </ul>
