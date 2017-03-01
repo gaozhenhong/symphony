@@ -156,7 +156,7 @@
                                        title="${relevantArticle.articleAuthorName}"
                                        style="background-image:url('${relevantArticle.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"
                                        href="${servePath}/member/${relevantArticle.articleAuthorName}"></a>
-                                    <a rel="nofollow" class="title" href="${servePath}/${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
+                                    <a rel="nofollow" class="title" href="${servePath}${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
                                 </li>
                                 </#list>
                             </ul>
