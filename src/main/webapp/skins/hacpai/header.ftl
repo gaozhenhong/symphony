@@ -41,13 +41,13 @@
         <div class="fn-none">
             <ul class="fn-list">
                 <li>
-                    <a href="/member/${userName}">${myArticleLabel}</a>
+                    <a href="${servePath}/member/${userName}">${myArticleLabel}</a>
                 </li>
                 <li>
-                    <a href="/member/${userName}/comments">${myCommentLabel}</a>
+                    <a href="${servePath}/member/${userName}/comments">${myCommentLabel}</a>
                 </li>
                 <li>
-                    <a href="/member/${userName}/points">${myPointLabel}</a>
+                    <a href="${servePath}/member/${userName}/points">${myPointLabel}</a>
                 </li>
                 <li>
                     <a href="/settings">${settingsLabel}</a>
