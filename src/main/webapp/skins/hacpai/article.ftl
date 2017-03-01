@@ -45,11 +45,11 @@
                         </div>
                         <div class="article-title fn-flex">
                             <h2 class="fn-flex-1">
-                                <a rel="author" href="/member/${article.articleAuthorName}" class="ft-small"
+                                <a rel="author" href="${servePath}/member/${article.articleAuthorName}" class="ft-small"
                                    title="${article.articleAuthorName}">
                                     <img class="avatar-small" src="${article.articleAuthorThumbnailURL}" />
                                 </a> &nbsp;
-                                <a href="${servePath}${article.articlePermalink}" rel="bookmark">
+                                <a href="${servePath}/${article.articlePermalink}" rel="bookmark">
                                     ${article.articleTitleEmoj}
                                 </a> &nbsp;
                             </h2> 
@@ -155,8 +155,8 @@
                                     <a class="avatar-small slogan" rel="nofollow" 
                                        title="${relevantArticle.articleAuthorName}"
                                        style="background-image:url('${relevantArticle.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"
-                                       href="/member/${relevantArticle.articleAuthorName}"></a>
-                                    <a rel="nofollow" class="title" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
+                                       href="${servePath}/member/${relevantArticle.articleAuthorName}"></a>
+                                    <a rel="nofollow" class="title" href="${servePath}/${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
                                 </li>
                                 </#list>
                             </ul>
@@ -174,10 +174,10 @@
                                 <#list sideRandomArticles as randomArticle>
                                 <li<#if !randomArticle_has_next> class="last"</#if>>
                                     <a class="avatar-small slogan" rel="nofollow"
-                                       href="/member/${randomArticle.articleAuthorName}"
+                                       href="${servePath}/member/${randomArticle.articleAuthorName}"
                                        title="${randomArticle.articleAuthorName}"
                                        style="background-image:url('${randomArticle.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></a>
-                                    <a class="title" rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
+                                    <a class="title" rel="nofollow" href="${servePath}/${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
                                 </li>
                                 </#list>
                             </ul>
