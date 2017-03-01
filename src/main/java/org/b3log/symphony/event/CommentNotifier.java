@@ -298,7 +298,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                             + "/member/" + commenterName + "'>" + commenterName + "</a>");
                 }
 
-                content = content.replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink
+                content = content.replace("{article}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()+ articlePermalink
                         + "'>" + articleTitle + "</a>")
                         .replace("{comment}", cc.replaceAll("<p>", "").replaceAll("</p>", ""));
 
