@@ -49,7 +49,7 @@
                                    title="${article.articleAuthorName}">
                                     <img class="avatar-small" src="${article.articleAuthorThumbnailURL}" />
                                 </a> &nbsp;
-                                <a href="${servePath}/${article.articlePermalink}" rel="bookmark">
+                                <a href="${servePath}${article.articlePermalink}" rel="bookmark">
                                     ${article.articleTitleEmoj}
                                 </a> &nbsp;
                             </h2> 
