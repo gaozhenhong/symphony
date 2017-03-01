@@ -244,8 +244,8 @@ public class ArticleProcessor {
         final JSONObject author = userQueryService.getUser(authorId);
         final String userName = author.optString(User.USER_NAME);
         String msg = langPropsService.get("duplicatedArticleTitleLabel");
-        msg = msg.replace("{user}", "<a target='_blank' href='/member/" + userName + "'>" + userName + "</a>");
-        msg = msg.replace("{article}", "<a target='_blank' href='/article/" + article.optString(Keys.OBJECT_ID)
+        msg = msg.replace("{user}", "<a target='_blank' href='"+Latkes.getServePath()+"/member/" + userName + "'>" + userName + "</a>");
+        msg = msg.replace("{article}", "<a target='_blank' href='"+Latkes.getServePath()+"/article/" + article.optString(Keys.OBJECT_ID)
                 + "'>" + title + "</a>");
 
         final JSONObject ret = new JSONObject();
