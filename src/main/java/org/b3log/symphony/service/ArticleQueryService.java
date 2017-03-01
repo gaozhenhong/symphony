@@ -1212,8 +1212,7 @@ public class ArticleQueryService {
 
                 if (!invited) {
                     String blockContent = langPropsService.get("articleDiscussionLabel");
-                    blockContent = blockContent.replace("{user}", "<a href='" + Latkes.getServePath()
-                            + "/member/" + authorName + "'>" + authorName + "</a>");
+                    blockContent = blockContent.replace("{user}", "<a href='/member/" + authorName + "'>" + authorName + "</a>");
 
                     return blockContent;
                 }
@@ -2361,8 +2360,7 @@ public class ArticleQueryService {
 
                 if (!invited) {
                     String blockContent = langPropsService.get("articleDiscussionLabel");
-                    blockContent = blockContent.replace("{user}", "<a href='" + Latkes.getServePath()
-                            + "/member/" + authorName + "'>" + authorName + "</a>");
+                    blockContent = blockContent.replace("{user}", "<a href='/member/" + authorName + "'>" + authorName + "</a>");
 
                     article.put(Article.ARTICLE_CONTENT, blockContent);
                     article.put(Common.DISCUSSION_VIEWABLE, false);
@@ -2376,8 +2374,7 @@ public class ArticleQueryService {
             }
 
             for (final String userName : userNames) {
-                articleContent = articleContent.replace('@' + userName, "@<a href='" + Latkes.getServePath()
-                        + "/member/" + userName + "'>" + userName + "</a>");
+                articleContent = articleContent.replace('@' + userName, "@<a href='/member/" + userName + "'>" + userName + "</a>");
             }
 
             articleContent = shortLinkQueryService.linkArticle(articleContent);
@@ -2392,8 +2389,7 @@ public class ArticleQueryService {
                 final Set<String> rewordContentUserNames = userQueryService.getUserNames(articleRewardContent);
 
                 for (final String userName : rewordContentUserNames) {
-                    articleRewardContent = articleRewardContent.replace('@' + userName, "@<a href='" + Latkes.getServePath()
-                            + "/member/" + userName + "'>" + userName + "</a>");
+                    articleRewardContent = articleRewardContent.replace('@' + userName, "@<a href='/member/" + userName + "'>" + userName + "</a>");
                 }
 
                 articleRewardContent = Emotions.convert(articleRewardContent);
