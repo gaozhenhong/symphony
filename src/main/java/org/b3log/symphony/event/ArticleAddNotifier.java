@@ -175,7 +175,7 @@ public class ArticleAddNotifier extends AbstractEventListener<JSONObject> {
             } else {
                 content = content.replace("{user}", UserExt.ANONYMOUS_USER_NAME);
             }
-            content = content.replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink
+            content = content.replace("{article}", "<a target='_blank' rel='nofollow' href='"+ Latkes.getServePath()+articlePermalink
                     + "'>" + articleTitle + "</a>");
             content = Emotions.convert(content);
             timeline.put(Common.CONTENT, content);
