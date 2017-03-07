@@ -187,10 +187,11 @@ public class LinkForgeQueryService {
             cachedTags = cachedTags.size() > TAG_MAX_COUNT ? cachedTags.subList(0, TAG_MAX_COUNT) : cachedTags;
 
             for (final JSONObject cachedTag : cachedTags) {
-                if (cachedTag.optInt(Tag.TAG_LINK_CNT) < 1
-                        || cachedTag.optInt(Tag.TAG_REFERENCE_CNT) < TAG_REF_COUNT) {
-                    continue; // XXX: optimize, reduce queries
-                }
+            	//暂时去掉限制
+//                if (cachedTag.optInt(Tag.TAG_LINK_CNT) < 1
+//                        || cachedTag.optInt(Tag.TAG_REFERENCE_CNT) < TAG_REF_COUNT) {
+//                    continue; // XXX: optimize, reduce queries
+//                }
 
                 final String tagId = cachedTag.optString(Keys.OBJECT_ID);
 
