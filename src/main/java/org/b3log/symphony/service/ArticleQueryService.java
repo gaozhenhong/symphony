@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.25.25.43, Feb 12, 2017
+ * @version 2.26.26.46, Mar 4, 2017
  * @since 0.2.0
  */
 @Service
@@ -1385,7 +1385,13 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
                 addProjection(Article.ARTICLE_PERFECT, Integer.class).
+                addProjection(Article.ARTICLE_BAD_CNT, Integer.class).
+                addProjection(Article.ARTICLE_GOOD_CNT, Integer.class).
+                addProjection(Article.ARTICLE_COLLECT_CNT, Integer.class).
+                addProjection(Article.ARTICLE_WATCH_CNT, Integer.class).
+                addProjection(Article.ARTICLE_UA, String.class).
                 addProjection(Article.ARTICLE_CONTENT, String.class);
+
 
         return ret;
     }
@@ -1429,7 +1435,11 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
                 addProjection(Article.ARTICLE_PERFECT, Integer.class).
-                addProjection(Article.ARTICLE_CONTENT, String.class).
+                addProjection(Article.ARTICLE_BAD_CNT, Integer.class).
+                addProjection(Article.ARTICLE_GOOD_CNT, Integer.class).
+                addProjection(Article.ARTICLE_COLLECT_CNT, Integer.class).
+                addProjection(Article.ARTICLE_WATCH_CNT, Integer.class).
+                addProjection(Article.ARTICLE_UA, String.class).
                 addProjection(Article.ARTICLE_CONTENT, String.class);
 
         return ret;
@@ -1466,6 +1476,11 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
                 addProjection(Article.ARTICLE_PERFECT, Integer.class).
+                addProjection(Article.ARTICLE_BAD_CNT, Integer.class).
+                addProjection(Article.ARTICLE_GOOD_CNT, Integer.class).
+                addProjection(Article.ARTICLE_COLLECT_CNT, Integer.class).
+                addProjection(Article.ARTICLE_WATCH_CNT, Integer.class).
+                addProjection(Article.ARTICLE_UA, String.class).
                 addProjection(Article.ARTICLE_CONTENT, String.class);
 
         return ret;
@@ -1502,6 +1517,11 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                 addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
                 addProjection(Article.ARTICLE_PERFECT, Integer.class).
+                addProjection(Article.ARTICLE_BAD_CNT, Integer.class).
+                addProjection(Article.ARTICLE_GOOD_CNT, Integer.class).
+                addProjection(Article.ARTICLE_COLLECT_CNT, Integer.class).
+                addProjection(Article.ARTICLE_WATCH_CNT, Integer.class).
+                addProjection(Article.ARTICLE_UA, String.class).
                 addProjection(Article.ARTICLE_CONTENT, String.class);
 
         return ret;
@@ -1707,6 +1727,7 @@ public class ArticleQueryService {
 
                     if (UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)) {
                         article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
+                        article.put(Article.ARTICLE_T_TITLE_EMOJI, langPropsService.get("articleTitleBlockLabel"));
                     }
                 }
             } finally {
@@ -2052,6 +2073,7 @@ public class ArticleQueryService {
      * <li>anonymous process</li>
      * <li>builds tag objects</li>
      * <li>generates article preview content</li>
+     * <li>extracts the first image URL</li>
      * </ul>
      *
      * @param avatarViewMode the specified avatar view mode
@@ -2062,7 +2084,14 @@ public class ArticleQueryService {
         toArticleDate(article);
         genArticleAuthor(avatarViewMode, article);
 
-        article.put(Article.ARTICLE_T_PREVIEW_CONTENT, getArticleMetaDesc(article));
+        final String previewContent = getArticleMetaDesc(article);
+        article.put(Article.ARTICLE_T_PREVIEW_CONTENT, previewContent);
+
+        if (StringUtils.length(previewContent) > 100) {
+            article.put(Article.ARTICLE_T_THUMBNAIL_URL, getArticleThumbnail(article));
+        } else {
+            article.put(Article.ARTICLE_T_THUMBNAIL_URL, "");
+        }
 
         String title = article.optString(Article.ARTICLE_TITLE).replace("<", "&lt;").replace(">", "&gt;");
         title = Markdowns.clean(title, "");
@@ -2141,6 +2170,38 @@ public class ArticleQueryService {
             tags.add(tag);
         }
         article.put(Article.ARTICLE_T_TAG_OBJS, (Object) tags);
+    }
+
+    /**
+     * Gets the first image URL of the specified article.
+     *
+     * @param article the specified article
+     * @return the first image URL, returns {@code ""} if not found
+     */
+    private String getArticleThumbnail(final JSONObject article) {
+        final String content = article.optString(Article.ARTICLE_CONTENT);
+        final String html = Markdowns.toHTML(content);
+        String ret = StringUtils.substringBetween(html, "<img src=\"", "\"");
+
+        final boolean qiniuEnabled = Symphonys.getBoolean("qiniu.enabled");
+        if (qiniuEnabled) {
+            final String qiniuDomain = Symphonys.get("qiniu.domain");
+            if (StringUtils.startsWith(ret, qiniuDomain)) {
+                ret += "?imageView2/1/w/" + 180 + "/h/" + 135 + "/format/jpg/interlace/1/q";
+            } else {
+                ret = "";
+            }
+        } else {
+            if (!StringUtils.startsWith(ret, Latkes.getServePath())) {
+                ret = "";
+            }
+        }
+
+        if (StringUtils.isBlank(ret)) {
+            ret = "";
+        }
+
+        return ret;
     }
 
     /**
@@ -2328,6 +2389,7 @@ public class ArticleQueryService {
             if (null != author && UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)
                     || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
                 article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
+                article.put(Article.ARTICLE_T_TITLE_EMOJI, langPropsService.get("articleTitleBlockLabel"));
                 article.put(Article.ARTICLE_CONTENT, langPropsService.get("articleContentBlockLabel"));
                 article.put(Article.ARTICLE_T_PREVIEW_CONTENT, langPropsService.get("articleContentBlockLabel"));
                 article.put(Article.ARTICLE_T_TOC, "");
@@ -2374,7 +2436,8 @@ public class ArticleQueryService {
             }
 
             for (final String userName : userNames) {
-                articleContent = articleContent.replace('@' + userName, "@<a href='/member/" + userName + "'>" + userName + "</a>");
+                articleContent = articleContent.replace('@' + userName + " ", "@<a href='" + Latkes.getServePath()
+                        + "/member/" + userName + "'>" + userName + "</a> ");
             }
 
             articleContent = shortLinkQueryService.linkArticle(articleContent);
@@ -2389,7 +2452,8 @@ public class ArticleQueryService {
                 final Set<String> rewordContentUserNames = userQueryService.getUserNames(articleRewardContent);
 
                 for (final String userName : rewordContentUserNames) {
-                    articleRewardContent = articleRewardContent.replace('@' + userName, "@<a href='/member/" + userName + "'>" + userName + "</a>");
+                    articleRewardContent = articleRewardContent.replace('@' + userName + " ",
+                            "@<a href='" + Latkes.getServePath() + "/member/" + userName + "'>" + userName + "</a> ");
                 }
 
                 articleRewardContent = Emotions.convert(articleRewardContent);
@@ -2575,7 +2639,6 @@ public class ArticleQueryService {
      */
     public String getArticleMetaDesc(final JSONObject article) {
         final String articleId = article.optString(Keys.OBJECT_ID);
-
         String articleAbstract = articleCache.getArticleAbstract(articleId);
         if (StringUtils.isNotBlank(articleAbstract)) {
             return articleAbstract;
@@ -2605,7 +2668,7 @@ public class ArticleQueryService {
 
             final Whitelist whitelist = Whitelist.basicWithImages();
             whitelist.addTags("object", "video");
-            ret = Jsoup.clean(ret,whitelist);
+            ret = Jsoup.clean(ret, whitelist);
 
             final int threshold = 20;
             String[] pics = StringUtils.substringsBetween(ret, "<img", ">");
@@ -2665,12 +2728,10 @@ public class ArticleQueryService {
                 ret = StringUtils.replaceEach(ret, objs, objsRepl);
             }
 
-            if (ret.length() >= length && null != pics) {
-                ret = StringUtils.substring(ret, 0, length)
-                        + " ....";
-
-                ret = Jsoup.clean(Jsoup.parse(ret).text(), Whitelist.none());
-                ret = ret.replaceAll("\"", "'");
+            String tmp = Jsoup.clean(Jsoup.parse(ret).text(), Whitelist.none());
+            if (tmp.length() >= length && null != pics) {
+                tmp = StringUtils.substring(tmp, 0, length) + " ....";
+                ret = tmp.replaceAll("\"", "'");
 
                 articleCache.putArticleAbstract(articleId, ret);
 
@@ -2692,13 +2753,12 @@ public class ArticleQueryService {
                 ret = StringUtils.replaceEach(ret, urls, urlsRepl);
             }
 
-            if (ret.length() >= length) {
-                ret = StringUtils.substring(ret, 0, length)
-                        + " ....";
+            tmp = Jsoup.clean(Jsoup.parse(ret).text(), Whitelist.none());
+            if (tmp.length() >= length) {
+                tmp = StringUtils.substring(tmp, 0, length) + " ....";
             }
 
-            ret = Jsoup.clean(Jsoup.parse(ret).text(), Whitelist.none());
-            ret = ret.replaceAll("\"", "'");
+            ret = tmp.replaceAll("\"", "'");
 
             articleCache.putArticleAbstract(articleId, ret);
 

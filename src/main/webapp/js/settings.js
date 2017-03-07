@@ -21,7 +21,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.19.11.17, Jan 23, 2017
+ * @version 1.20.11.19, Mar 6, 2017
  */
 
 /**
@@ -29,6 +29,56 @@
  * @static
  */
 var Settings = {
+    /**
+     * 个人主页滚动固定
+     */
+    homeScroll: function () {
+        var beforeScorllTop = $(window).scrollTop(),
+        navHTML = $('.nav-tabs').html();
+
+        $(window).scroll(function () {
+            var currentScrollTop = $(window).scrollTop();
+
+            if (currentScrollTop > beforeScorllTop) {
+                $('.nav-tabs').html($('.home-menu').html());
+            } else {
+                $('.nav-tabs').html(navHTML);
+            }
+
+            beforeScorllTop = currentScrollTop;
+        });
+
+        $('.nav-tabs').html($('.home-menu').html());
+        $('.nav').css('position', 'fixed');
+        $('.main').css('paddingTop', '89px');
+    },
+    /**
+     * 通知页面侧边栏滚动固定
+     */
+    notiScroll: function () {
+        var $side = $('#side'),
+            width = $side.width(),
+            maxScroll = $('.small-tips').closest('.module').length === 1 ? 109 + $('.small-tips').closest('.module').height() : 89;
+        $('.side.fn-none').height($side.height());
+        $(window).scroll(function () {
+            if ($(window).scrollTop() > maxScroll) {
+                $side.css({
+                    position: 'fixed',
+                    width: width + 'px',
+                    top: 0,
+                    right: $('.wrapper').css('margin-right')
+                });
+
+                $('.side.fn-none').show();
+                $('.small-tips').closest('.module').hide();
+            } else {
+                $side.removeAttr('style');
+
+                $('.side.fn-none').hide();
+                $('.small-tips').closest('.module').show();
+            }
+        });
+    },
     /**
      * 有代码片段时，需要进行高亮
      * @returns {Boolean}
@@ -643,6 +693,76 @@ var Settings = {
             } else {
                 $("#emotionList").val(emoji);
             }
+        });
+    },
+    /**
+     * 个人主页初始化
+     */
+    initHome: function () {
+        if (Label.type === 'commentsAnonymous' || 'comments' === Label.type) {
+            Settings.initHljs();
+        }
+        if (Label.type === 'linkForge') {
+            Util.linkForge();
+        }
+
+        if ($.ua.device.type !== 'mobile') {
+            Settings.homeScroll();
+        }
+
+        $.pjax({
+            selector: 'a',
+            container: '#home-pjax-container',
+            show: '',
+            cache: false,
+            storage: true,
+            titleSuffix: '',
+            filter: function(href){
+                return 0 > href.indexOf(Label.servePath + '/member/' + Label.userName);
+            },
+            callback: function(status){
+                switch(status.type){
+                    case 'success':
+                    case 'cache':
+                        $('.home-menu a').removeClass('current');
+                        switch (this.pathname) {
+                            case '/member/' + Label.userName:
+                            case '/member/' + Label.userName + '/comments':
+                                Settings.initHljs();
+                            case '/member/' + Label.userName + '/articles/anonymous':
+                            case '/member/' + Label.userName + '/comments/anonymous':
+                                Settings.initHljs();
+                                $('.home-menu a:eq(0)').addClass('current');
+                                break;
+                            case '/member/' + Label.userName + '/watching/articles':
+                            case '/member/' + Label.userName + '/following/users':
+                            case '/member/' + Label.userName + '/following/tags':
+                            case '/member/' + Label.userName + '/following/articles':
+                            case '/member/' + Label.userName + '/followers':
+                                $('.home-menu a:eq(1)').addClass('current');
+                                break;
+                            case '/member/' + Label.userName + '/points':
+                                $('.home-menu a:eq(2)').addClass('current');
+                                break;
+                            case '/member/' + Label.userName + '/forge/link':
+                                $('.home-menu a:eq(3)').addClass('current');
+                                Util.linkForge();
+                                break;
+                        }
+                    case 'error':
+                        break;
+                    case 'hash':
+                        break;
+                }
+                $('.nav-tabs').html($('.home-menu').html());
+            }
+        });
+        NProgress.configure({ showSpinner: false });
+        $('#home-pjax-container').bind('pjax.start', function(){
+            NProgress.start();
+        });
+        $('#home-pjax-container').bind('pjax.end', function(){
+            NProgress.done();
         });
     }
 };

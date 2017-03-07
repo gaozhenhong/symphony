@@ -177,7 +177,7 @@
                                        href="${servePath}/member/${randomArticle.articleAuthorName}"
                                        title="${randomArticle.articleAuthorName}"
                                        style="background-image:url('${randomArticle.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></a>
-                                    <a class="title" rel="nofollow" href="${servePath}/${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
+                                    <a class="title" rel="nofollow" href="${servePath}${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
                                 </li>
                                 </#list>
                             </ul>

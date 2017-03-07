@@ -121,9 +121,10 @@
                                         <span class="tooltipped tooltipped-n" aria-label="share to google" data-type="google"><span class="icon-google"></span></span> &nbsp;
                                         <span class="tooltipped tooltipped-n" data-type="copy"
                                               aria-label="${copyLabel}"
-                                              id="shareClipboard"
-                                              data-clipboard-text="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"><span
+                                              id="shareClipboard"><span
                                                 class="icon-link"></span></span>
+                                        <input type="text" class="article-clipboard"
+                                               value="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"/>
                                     </div>
                                 </div>
                             </div>
@@ -217,11 +218,11 @@
                         </div>
                         <div class="module-header article-module-bottom fn-clear">
                             <#if articlePrevious??>
-                                <a rel="prev" class="fn-left fn-ellipsis" href="${articlePrevious.articlePermalink}">
+                                <a rel="prev" class="fn-left fn-ellipsis" href="${servePath}${articlePrevious.articlePermalink}">
                                     <span class="icon-chevron-left"></span> ${articlePrevious.articleTitleEmoj}</a>
                             </#if>
                             <#if articleNext??>
-                                <a rel="next" class="fn-right fn-ellipsis" href="${articleNext.articlePermalink}">${articleNext.articleTitleEmoj}
+                                <a rel="next" class="fn-right fn-ellipsis" href="${servePath}${articleNext.articlePermalink}">${articleNext.articleTitleEmoj}
                                 <span class="icon-chevron-right"></span>
                                 </a>
                             </#if>
@@ -283,7 +284,7 @@
                         </div>
                     </div>
                     </#if>
-
+                    <#if pjax><!---- pjax {#comments} start ----></#if>
                     <div class="module comments" id="comments">
                         <div class="comments-header module-header">
                             <span class="article-cmt-cnt">${article.articleCommentCount} ${cmtLabel}</span>
@@ -314,17 +315,18 @@
                             </ul>
                             <div id="bottomComment"></div>
                         </div>
-                        <@pagination url=article.articlePermalink query="m=${userCommentViewMode}" />
+                        <@pagination url="${servePath}${article.articlePermalink}" query="m=${userCommentViewMode}#comments" pjaxTitle="${article.articleTitle} - ${symphonyLabel}" />
                     </div>
+                    <#if pjax><!---- pjax {#comments} end ----></#if>
 
-					<div class="ft-center fn-pointer <#if article.articleComments?size == 0> fn-none</#if>" title="${cmtLabel}"
+                    <div class="ft-center fn-pointer <#if article.articleComments?size == 0> fn-none</#if>" title="${cmtLabel}"
                         <#if permissions["commonAddComment"].permissionGrant>
                             onclick="$('.article-actions .icon-reply-btn').click()"
                         <#else>
                             onclick="Article.permissionTip(Label.noPermissionLabel)"
                         </#if>>
                         <img src="${noCmtImg}" class="article-no-comment-img">
-					</div>
+                    </div>
 
                     <#if sideRelevantArticles?size != 0>
                         <div class="module">
@@ -351,7 +353,6 @@
                             </div>
                         </div>
                     </#if>
-
                 </div>
                 <div class="side">
                     <#include 'common/person-info.ftl'/>
@@ -443,8 +444,8 @@
         </div>
         <#include "footer.ftl">
         <script src="${staticServePath}/js/lib/compress/article-libs.min.js?${staticResourceVersion}"></script>
-        <script src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             Label.commentErrorLabel = "${commentErrorLabel}";
             Label.symphonyLabel = "${symphonyLabel}";
@@ -479,35 +480,16 @@
             Label.qiniuDomain = '${qiniuDomain}';
             Label.qiniuUploadToken = '${qiniuUploadToken}';
             Label.noPermissionLabel = '${noPermissionLabel}';
+            Label.imgMaxSize = ${imgMaxSize?c};
+            Label.fileMaxSize = ${fileMaxSize?c};
+            Label.articleChannel = "${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-channel?articleId=${article.oId}&articleType=${article.articleType}";
             <#if isLoggedIn>
                 Label.currentUserName = '${currentUser.userName}';
-                Article.makeNotificationRead('${article.oId}', '${notificationCmtIds}');
-
-                setTimeout(function() {
-                    Util.setUnreadNotificationCount();
-                }, 1000);
+                Label.notificationCmtIds = '${notificationCmtIds}';
             </#if>
-            // Init [Article] channel
-            ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
-            $(document).ready(function () {
-                Comment.init();
-
-                 // jQuery File Upload
-                Util.uploadFile({
-                    "type": "img",
-                    "id": "fileUpload",
-                    "pasteZone": $(".CodeMirror"),
-                    "qiniuUploadToken": "${qiniuUploadToken}",
-                    "editor": Comment.editor,
-                    "uploadingLabel": "${uploadingLabel}",
-                    "qiniuDomain": "${qiniuDomain}",
-                    "imgMaxSize": ${imgMaxSize?c},
-                    "fileMaxSize": ${fileMaxSize?c}
-                });
-                <#if 3 == article.articleType>
-                    Article.playThought('${article.articleContent}');
-                </#if>
-            });
+            <#if 3 == article.articleType>
+                Article.playThought('${article.articleContent}');
+            </#if>
         </script>
     </body>
 </html>

@@ -28,18 +28,23 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.LatkeBeanManagerImpl;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.TagCache;
+import org.b3log.symphony.service.ShortLinkQueryService;
+import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
 
 /**
  * This class defines tag model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.15.6.8, Feb 13, 2017
+ * @version 1.15.6.10, Mar 4, 2017
  * @since 0.2.0
  */
 public final class Tag {
@@ -457,6 +462,29 @@ public final class Tag {
             }
         }
 
+        final List<JSONObject> allTags = cache.getTags();
+        Collections.sort(allTags, new Comparator<JSONObject>() {
+            @Override
+            public int compare(final JSONObject t1, final JSONObject t2) {
+                final String u1Title = t1.optString(Tag.TAG_T_TITLE_LOWER_CASE);
+                final String u2Title = t2.optString(Tag.TAG_T_TITLE_LOWER_CASE);
+
+                return u2Title.length() - u1Title.length();
+            }
+        });
+
+        for (final JSONObject tag : allTags) {
+            final String tagURI = tag.optString(Tag.TAG_URI);
+            final String tagTitle = tag.optString(Tag.TAG_TITLE);
+            if (tagURI.equals(tagTitle)) {
+                continue;
+            }
+
+            if (StringUtils.equals(title, tagURI)) {
+                return tag.optString(Tag.TAG_TITLE);
+            }
+        }
+
         for (final Map.Entry<String, Set<String>> entry : NORMALIZE_MAPPINGS.entrySet()) {
             final Set<String> oddTitles = entry.getValue();
             for (final String oddTitle : oddTitles) {
@@ -467,6 +495,27 @@ public final class Tag {
         }
 
         return title;
+    }
+
+    /**
+     * Fills the description for the specified tag.
+     *
+     * @param tag the specified tag
+     */
+    public static void fillDescription(final JSONObject tag) {
+        String description = tag.optString(Tag.TAG_DESCRIPTION);
+        String descriptionText = tag.optString(Tag.TAG_TITLE);
+        if (StringUtils.isNotBlank(description)) {
+            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+            final ShortLinkQueryService shortLinkQueryService = beanManager.getReference(ShortLinkQueryService.class);
+
+            description = shortLinkQueryService.linkTag(description);
+            description = Markdowns.toHTML(description);
+
+            tag.put(Tag.TAG_DESCRIPTION, description);
+            descriptionText = Jsoup.parse(description).text();
+        }
+        tag.put(Tag.TAG_T_DESCRIPTION_TEXT, descriptionText);
     }
 
     /**

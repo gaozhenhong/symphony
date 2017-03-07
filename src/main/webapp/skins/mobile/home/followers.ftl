@@ -13,7 +13,7 @@
                 <h3 class="fn-inline">
                     <a rel="nofollow" href="${servePath}/member/${follower.userName}" >${follower.userName}</a>
                 </h3> &nbsp;
-                <#if isLoggedIn && (userName != follower.userName)> 
+                <#if isLoggedIn && (currentUser.userName != follower.userName)>
                 <#if follower.isFollowing>
                 <button class="red small" onclick="Util.unfollow(this, '${follower.oId}', 'user')"> 
                     ${unfollowLabel}
@@ -43,7 +43,7 @@
         </#list>
     </ol>
 </div>
-<@pagination url="/member/${user.userName}/followers"/>
+<@pagination url="${servePath}/member/${user.userName}/followers"/>
 <#else>
 <p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
 </#if>

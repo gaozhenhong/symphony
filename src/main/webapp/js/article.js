@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.27.42.29, Feb 11, 2017
+ * @version 1.28.42.31, Mar 5, 2017
  */
 
 /**
@@ -288,6 +288,22 @@ var Comment = {
         $.ua.set(navigator.userAgent);
 
         this._initHotKey();
+
+        $.pjax({
+            selector: '.pagination a',
+            container: '#comments',
+            show: '',
+            cache: false,
+            storage: true,
+            titleSuffix: ''
+        });
+        NProgress.configure({ showSpinner: false });
+        $('#comments').bind('pjax.start', function(){
+            NProgress.start();
+        });
+        $('#comments').bind('pjax.end', function(){
+            NProgress.done();
+        });
 
         if (!Label.isLoggedIn) {
             return false;
@@ -1073,23 +1089,12 @@ var Article = {
             $(this).hide();
         });
 
-        if (typeof (ZeroClipboard) !== "undefined") {
-            $('#shareClipboard').mouseover(function () {
-                $(this).attr('aria-label', Label.copyLabel);
-            });
-
-            ZeroClipboard.config({
-                hoverClass: "tooltipped-hover",
-                swfPath: Label.staticServePath + "/js/lib/zeroclipboard/ZeroClipboard.swf"
-            });
-
-            var shareClipboard = new ZeroClipboard(document.getElementById("shareClipboard"));
-            shareClipboard.on("ready", function (readyEvent) {
-                shareClipboard.on("aftercopy", function (event) {
-                    $('#shareClipboard').attr('aria-label', Label.copiedLabel);
-                });
-            });
-        }
+        $('#shareClipboard').mouseover(function () {
+            $(this).attr('aria-label', Label.copyLabel);
+        });
+        Util.clipboard($('#shareClipboard'), $('#shareClipboard').next(), function () {
+            $('#shareClipboard').attr('aria-label', Label.copiedLabel);
+        });
     },
     /*
      * @description 解析语法高亮
@@ -1339,16 +1344,20 @@ var Article = {
 
         // 样式
         var $articleToc = $('#articleToC'),
-                top = $articleToc.offset().top;
+            $articleTocUl = $('.article-toc'),
+            $articleTocs = $('.article-content [id^=toc]'),
+            isUlScroll = false,
+            top = $articleToc.offset().top;
 
         $articleToc.css('width', $('.side').width() + 'px');
         $articleToc.next().css({
             'width': $('.side').width() + 'px',
             'top': ($articleToc.height() + 41) + 'px'
         });
-        $('.article-toc').css({
+        $articleTocUl.css({
             'overflow': 'auto',
-            'max-height': $(window).height() - 80 + 'px'
+            'max-height': $(window).height() - 90 + 'px',
+            'position': 'relative'
         });
 
         // 目录点击
@@ -1360,22 +1369,22 @@ var Article = {
             }, 50);
         });
 
-        var toc = [];
-        $('.article-content [id^=toc]').each(function (i) {
-            toc.push({
-                id: this.id,
-                offsetTop: this.offsetTop
-            });
-        });
-
         $(window).scroll(function (event) {
             if ($('#articleToC').css('display') === 'none') {
                 return false;
             }
 
+            // 界面各种图片加载会导致帖子目录定位
+            toc = [];
+            $articleTocs.each(function (i) {
+                toc.push({
+                    id: this.id,
+                    offsetTop: this.offsetTop
+                });
+            });
+
             // 当前目录样式
             var scrollTop = $(window).scrollTop();
-
             for (var i = 0, iMax = toc.length; i < iMax; i++) {
                 if (scrollTop < toc[i].offsetTop - 5) {
                     $articleToc.find('li').removeClass('current');
@@ -1384,7 +1393,6 @@ var Article = {
                     break;
                 }
             }
-
             if (scrollTop >= toc[toc.length - 1].offsetTop - 5) {
                 $articleToc.find('li').removeClass('current');
                 $articleToc.find('li:last').addClass('current');
@@ -1398,6 +1406,23 @@ var Article = {
                 $articleToc.css('position', 'initial');
                 $articleToc.next().css('position', 'initial');
             }
+
+            // auto scroll to current toc
+            var liOffsetTop = $articleToc.find('li.current')[0].offsetTop;
+            if (!isUlScroll) {
+                // down scroll
+                if ($articleTocUl.scrollTop() < liOffsetTop - $articleTocUl.height() + 30) {
+                    $articleTocUl.scrollTop(liOffsetTop - $articleTocUl.height() + 30);
+                }
+                // up scroll
+                if ($articleTocUl.scrollTop() > liOffsetTop - 30) {
+                    $articleTocUl.scrollTop(liOffsetTop);
+                }
+            }
+            // 在目录上滚动到边界时，会滚动 window，为了不让 window 滚动触发目录滚动。
+            setTimeout(function () {
+                isUlScroll = false;
+            }, 600);
         }).resize(function () {
             $articleToc.css('width', $('.side').width() + 'px');
             $articleToc.next().css({
@@ -1406,6 +1431,9 @@ var Article = {
         });
 
         $(window).scroll();
+        $articleTocUl.scrollTop($articleToc.find('li.current')[0].offsetTop).scroll(function () {
+            isUlScroll = true;
+        });
     },
     /**
      * @description 目录展现隐藏切换.
@@ -1452,3 +1480,31 @@ var Article = {
 };
 
 Article.init();
+
+$(document).ready(function () {
+    Comment.init();
+    // jQuery File Upload
+    Util.uploadFile({
+        "type": "img",
+        "id": "fileUpload",
+        "pasteZone": $(".CodeMirror"),
+        "qiniuUploadToken": Label.qiniuUploadToken,
+        "editor": Comment.editor,
+        "uploadingLabel": Label.uploadingLabel,
+        "qiniuDomain": Label.qiniuDomain,
+        "imgMaxSize": Label.imgMaxSize,
+        "fileMaxSize": Label.fileMaxSize
+    });
+
+    // Init [Article] channel
+    ArticleChannel.init(Label.articleChannel);
+
+    // make nogification read
+    if (Label.isLoggedIn) {
+        Article.makeNotificationRead(Label.articleOId, Label.notificationCmtIds);
+
+        setTimeout(function() {
+            Util.setUnreadNotificationCount();
+        }, 1000);
+    }
+});
