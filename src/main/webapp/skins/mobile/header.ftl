@@ -2,7 +2,7 @@
     <div class="wrapper fn-clear">
         <div class="head-fn fn-left">
             <h1>
-                ${logoIcon}
+                <!--${logoIcon}-->
             </h1>
         </div>
 
