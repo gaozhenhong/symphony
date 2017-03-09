@@ -31,12 +31,12 @@
                     </a>
                     <div class="ft-fade">${addDiscussionArticleTipLabel}</div>
                 </div>
-                <div>
+                <!--<div>
                     <a href="${servePath}/post?type=2">
                         <div class="icon-feed"> ${cityBroadcastLabel}</div>
                     </a>
                     <div class="ft-fade">${addCityArticleTipLabel} <i>${broadcastPoint}</i> ${pointLabel}</div>
-                </div>
+                </div>-->
             </div>
         </div>
         <#include "../footer.ftl">
