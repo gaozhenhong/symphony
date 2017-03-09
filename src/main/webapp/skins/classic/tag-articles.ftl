@@ -19,16 +19,8 @@
                     <#if pjax><!---- pjax {#tag-pjax-container} start ----></#if><div class="module article-module">
                         <div class="article-info fn-flex">
                             <#if tag.tagIconPath != "">
-                            <div class="avatar fn-left" style="background-image:url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
+                            <div class="avatar" style="background-image:url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
                             </#if>
-                            <h1 class="fn-inline">
-                                <a rel="tag"
-                                   href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a>
-                            </h1> 
-                            <#if tag.tagDomains?size gt 0>/</#if>
-                            <#list tag.tagDomains as domain>
-                            <a class="ft-gray" href="${servePath}/domain/${domain.domainURI}">${domain.domainTitle}</a>
-                            </#list> 
 
                             <div class="fn-flex-1">
                                 <span class="ft-gray ft-smaller">
@@ -54,7 +46,7 @@
                             </span>
                         </div>
                         <#if tag.tagIconPath != "">
-                        <div class="ft-smaller">
+                        <div class="content-reset desc">
                             ${tag.tagDescription}
                         </div>
                         </#if>
