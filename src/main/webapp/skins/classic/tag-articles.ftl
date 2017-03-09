@@ -15,15 +15,9 @@
         <#include "header.ftl">
         <div class="main tag-articles">
             <div class="wrapper">
-<<<<<<< HEAD
-                <div class="content">
-                    <div class="module article-module">
-                        <div class="fn-clear">
-=======
                 <div class="content" id="tag-pjax-container">
                     <#if pjax><!---- pjax {#tag-pjax-container} start ----></#if><div class="module article-module">
                         <div class="article-info fn-flex">
->>>>>>> refs/remotes/b3log/master
                             <#if tag.tagIconPath != "">
                             <div class="avatar fn-left" style="background-image:url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
                             </#if>
