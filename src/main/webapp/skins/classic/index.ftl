@@ -122,7 +122,7 @@
                     </div>
                 </div>
             </div>
-            <div>
+            <!--<div>
                 <br/><br/>
             </div>
             <div class="wrapper">
@@ -209,9 +209,9 @@
                     </ul>
                 </div>
                 <div class="metro-line fn-flex">
-                    <div class="metro-item">
+                    <div class="metro-item">-->
                         <!-- ${ADLabel} -->
-                        <a class="preview" href="https://hacpai.com/man">
+                        <!--<a class="preview" href="https://hacpai.com/man">
                             <img width="44px" src="${staticServePath}/images/tags/shell.png" alt="${sponsorLabel}">
                             <b>Hacker's Manual</b>
                         </a>
@@ -222,11 +222,11 @@
                             <b>${adDeliveryLabel}</b>
                         </a>
                     </div>
-                </div>
-                <div class="metro-border fn-flex">
+                </div>-->
+                <!--<div class="metro-border fn-flex">
                     <div></div>
                     <div class="purple"></div>
-                </div>
+                </div>-->
             </div>
         </div>
     </div>
