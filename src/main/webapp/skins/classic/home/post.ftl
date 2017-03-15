@@ -111,7 +111,7 @@
                     <#elseif 3 == articleType>
                     <span class="icon-video"></span> ${thoughtLabel}
                     <span class="ft-gray">${addThoughtArticleTipLabel}
-                        <a href="https://hacpai.com/article/1441942422856" target="_blank">(?)</a></span>
+                        <a href="${servePath}/article/1489045642459" target="_blank">(?)</a></span>
                     </#if>
                     <div class="fn-right">
                         <#if hasB3Key>
