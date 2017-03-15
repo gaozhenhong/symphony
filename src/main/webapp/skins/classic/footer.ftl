@@ -28,7 +28,7 @@
             <div class="fn-clear ft-smaller ft-fade">
                        ${sloganLabel}
                     <div class="fn-right">
-                       Powered by <a href="http://b3log.org" class="ft-gray" target="_blank">研发部</a>
+                       Powered by <a href="javascript:void(0)" class="ft-gray">研发部</a>
                             ${version} • ${elapsed?c}ms
                     </div>
                 </div>
