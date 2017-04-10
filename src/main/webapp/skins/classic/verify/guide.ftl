@@ -109,7 +109,7 @@
                         </div>
                         <div class="fn-none list">
                             <br/><br/>
-                            <div class="ft-center">${logoIcon2}</div> <br/>
+                            <div class="ft-center"></div> <br/>
                             <ul>
                                 <li>
                                     <a href="${servePath}/about">${getStartLabel}</a>
