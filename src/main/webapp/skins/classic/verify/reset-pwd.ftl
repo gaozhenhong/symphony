@@ -13,7 +13,6 @@
             <div class="wrapper verify">
                 <div class="verify-wrap">
                     <div class="form">
-                        ${logoIcon2}
 
                         <div class="input-wrap">
                             <span class="icon-userrole"></span>
