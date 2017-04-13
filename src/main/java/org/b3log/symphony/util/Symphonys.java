@@ -150,54 +150,54 @@ public final class Symphonys {
         }
 
         // Reports status to Rhythm, I hope that everyone will be able to join in the SymHub plan :p
-        new Timer(true).schedule(new TimerTask() {
-            @Override
-            public void run() {
-                final String symURL = Latkes.getServePath();
-                if (Networks.isIPv4(symURL)) {
-                    return;
-                }
-
-                HttpURLConnection httpConn = null;
-                OutputStream outputStream = null;
-
-                try {
-                    final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
-                    final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
-
-                    httpConn = (HttpURLConnection) new URL("https://rhythm.b3log.org/sym").openConnection();
-                    httpConn.setConnectTimeout(10000);
-                    httpConn.setReadTimeout(10000);
-                    httpConn.setDoOutput(true);
-                    httpConn.setRequestMethod("POST");
-                    httpConn.setRequestProperty("User-Agent", "B3log Symphony/" + SymphonyServletListener.VERSION);
-
-                    httpConn.connect();
-
-                    outputStream = httpConn.getOutputStream();
-                    final JSONObject sym = new JSONObject();
-                    sym.put("symURL", symURL);
-                    sym.put("symTitle", langPropsService.get("symphonyLabel", Latkes.getLocale()));
-
-                    IOUtils.write(sym.toString(), outputStream, "UTF-8");
-                    outputStream.flush();
-
-                    httpConn.getResponseCode();
-                } catch (final Exception e) {
-                    // ignore
-                } finally {
-                    IOUtils.closeQuietly(outputStream);
-
-                    if (null != httpConn) {
-                        try {
-                            httpConn.disconnect();
-                        } catch (final Exception e) {
-                            // ignore
-                        }
-                    }
-                }
-            }
-        }, 1000 * 60 * 60 * 2, 1000 * 60 * 60 * 2);
+//        new Timer(true).schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                final String symURL = Latkes.getServePath();
+//                if (Networks.isIPv4(symURL)) {
+//                    return;
+//                }
+//
+//                HttpURLConnection httpConn = null;
+//                OutputStream outputStream = null;
+//
+//                try {
+//                    final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+//                    final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
+//
+//                    httpConn = (HttpURLConnection) new URL("https://rhythm.b3log.org/sym").openConnection();
+//                    httpConn.setConnectTimeout(10000);
+//                    httpConn.setReadTimeout(10000);
+//                    httpConn.setDoOutput(true);
+//                    httpConn.setRequestMethod("POST");
+//                    httpConn.setRequestProperty("User-Agent", "B3log Symphony/" + SymphonyServletListener.VERSION);
+//
+//                    httpConn.connect();
+//
+//                    outputStream = httpConn.getOutputStream();
+//                    final JSONObject sym = new JSONObject();
+//                    sym.put("symURL", symURL);
+//                    sym.put("symTitle", langPropsService.get("symphonyLabel", Latkes.getLocale()));
+//
+//                    IOUtils.write(sym.toString(), outputStream, "UTF-8");
+//                    outputStream.flush();
+//
+//                    httpConn.getResponseCode();
+//                } catch (final Exception e) {
+//                    // ignore
+//                } finally {
+//                    IOUtils.closeQuietly(outputStream);
+//
+//                    if (null != httpConn) {
+//                        try {
+//                            httpConn.disconnect();
+//                        } catch (final Exception e) {
+//                            // ignore
+//                        }
+//                    }
+//                }
+//            }
+//        }, 1000 * 60 * 60 * 2, 1000 * 60 * 60 * 2);
     }
 
     /**
