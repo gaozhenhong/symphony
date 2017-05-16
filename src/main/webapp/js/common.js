@@ -205,7 +205,7 @@ var Util = {
             return false;
         }).bind('keyup', 'Shift+/', function (event) {
             // shift/⇧ ? 新窗口打开键盘快捷键说明文档
-            window.open('http://localhost:8080/article/1489040856349');
+            window.open('http://183.224.44.44:8088/article/1489040856349');
             return false;
         }).bind('keyup', 'j', function (event) {
             // j 移动到下一项
