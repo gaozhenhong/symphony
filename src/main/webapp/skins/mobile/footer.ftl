@@ -4,9 +4,9 @@
             <span class="ft-fade">&COPY; ${year}</span>
         </div>
         <div class="fn-hr5"></div>
-        <div class="ft-fade">
+        <!--<div class="ft-fade">
             ${sloganLabel}
-        </div>
+        </div>-->
         <div class="fn-hr5"></div>
      
     </div>
