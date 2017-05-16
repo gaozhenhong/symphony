@@ -18,6 +18,7 @@
 package org.b3log.symphony.service;
 
 import org.apache.commons.io.FileUtils;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Level;
@@ -31,6 +32,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.*;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
 
 /**
  * Manual query service.

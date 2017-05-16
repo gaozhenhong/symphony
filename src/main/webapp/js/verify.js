@@ -330,14 +330,14 @@ var Verify = {
                     $('.step-btn .red').show();
                     break;
                 case 4:
-                    $('.guide-tab > div:eq(3)').show();
-                    $('.intro dt:eq(3)').addClass('current');
+                    $('.guide-tab > div:eq(4)').show();
 
-                     $('.step-btn .red').show();
-                     $('.step-btn .green').text(Label.nextStepLabel);
+                    $('.step-btn .red').show();
+                    $('.step-btn .green').text(Label.finshLabel);
 
-                     $('.intro > div').hide();
-                     $('.intro > dl').show();
+                    $('.intro > div').show();
+                    $('.intro > dl').hide();
+                    break;
                     break;
                 case 5:
                     $('.guide-tab > div:eq(4)').show();
