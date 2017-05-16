@@ -50,7 +50,7 @@
                     <li<#if 'location' == type> class="fn-none"</#if>><a href="${servePath}/settings/location">${geoLabel}</a></li>
                     <li<#if 'privacy' == type> class="fn-none"</#if>><a href="${servePath}/settings/privacy">${privacyLabel}</a></li>
                     <li<#if 'password' == type> class="fn-none"</#if>><a href="${servePath}/settings/password">${passwordLabel}</a></li>
-                    <li<#if 'b3' == type> class="fn-none"</#if>><a href="${servePath}/settings/b3">B3</a></li>
+                    <!-- <li<#if 'b3' == type> class="fn-none"</#if>><a href="${servePath}/settings/b3">B3</a></li> -->
                     <li<#if 'i18n' == type> class="fn-none"</#if>><a href="${servePath}/settings/i18n">${i18nLabel}</a></li>
                     <li<#if 'data' == type> class="fn-none"</#if>><a href="${servePath}/settings/data">${dataLabel}</a></li>
                     <li<#if 'help' == type> class="current"</#if>><a href="${servePath}/settings/help">${helpLabel}</a></li>
