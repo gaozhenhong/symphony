@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  * time.
  * </p>
  * 
- * <p><a href="https://hacpai.com/article/1472639605458">為什麼你們就是不能加個空格呢？</a></p>
+ * <p><a href="http://183.224.44.44:8088/article/1472639605458">為什麼你們就是不能加個空格呢？</a></p>
  *
  * @author Vinta Chen
  * @author <a href="http://88250.b3log.org">Liang Ding</a>

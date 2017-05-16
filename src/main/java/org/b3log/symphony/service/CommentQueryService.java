@@ -942,7 +942,7 @@ public class CommentQueryService {
                 }
 
                 commentContent = commentContent.replace("@participants ",
-                        "@<a href='https://hacpai.com/article/1458053458339' class='ft-red'>participants</a> ");
+                        "@<a href='http://183.224.44.44:8088/article/1458053458339' class='ft-red'>participants</a> ");
             } catch (final ServiceException e) {
                 LOGGER.log(Level.ERROR, "Generates @username home URL for comment content failed", e);
             }

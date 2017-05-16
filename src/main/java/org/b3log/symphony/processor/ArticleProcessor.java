@@ -1504,7 +1504,7 @@ public class ArticleProcessor {
                     + "/member/" + userName + "'>" + userName + "</a> ");
         }
         markdownText = markdownText.replace("@participants ",
-                "@<a href='https://hacpai.com/article/1458053458339' class='ft-red'>participants</a> ");
+                "@<a href='http://183.224.44.44:8088/article/1458053458339' class='ft-red'>participants</a> ");
 
         markdownText = shortLinkQueryService.linkArticle(markdownText);
         markdownText = shortLinkQueryService.linkTag(markdownText);

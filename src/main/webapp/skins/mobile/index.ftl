@@ -92,7 +92,7 @@
             </div>
             <#if ADLabel != ''>
             <div class="item mid">
-                <a class="item-header" style="background-image: url(${adBgIcon})" href="https://hacpai.com/article/1460083956075">${sponsorLabel}</a>
+                <a class="item-header" style="background-image: url(${adBgIcon})" href="http://183.224.44.44:8088/article/1460083956075">${sponsorLabel}</a>
                 <div class="ad module-panel">
                     ${ADLabel}
                 </div>

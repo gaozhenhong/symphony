@@ -408,12 +408,12 @@ public final class Article {
     public static final int ARTICLE_TYPE_C_CITY_BROADCAST = 2;
 
     /**
-     * Article type - <a href="https://hacpai.com/article/1441942422856">thought</a>.
+     * Article type - <a href="http://183.224.44.44:8088/article/1441942422856">thought</a>.
      */
     public static final int ARTICLE_TYPE_C_THOUGHT = 3;
 
     /**
-     * Article type - <a href="https://hacpai.com/article/1483240295087">book</a>。
+     * Article type - <a href="http://183.224.44.44:8088/article/1483240295087">book</a>。
      */
     public static final int ARTICLE_TYPE_C_BOOK = 4;
 

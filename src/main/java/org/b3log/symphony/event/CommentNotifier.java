@@ -240,7 +240,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             }
 
             cc = cc.replace("@participants ",
-                    "@<a href='https://hacpai.com/article/1458053458339' class='ft-red'>participants</a> ");
+                    "@<a href='http://183.224.44.44:8088/article/1458053458339' class='ft-red'>participants</a> ");
             if (fromClient) {
                 // "<i class='ft-small'>by 88250</i>"
                 String syncCommenterName = StringUtils.substringAfter(cc, "<i class=\"ft-small\">by ");

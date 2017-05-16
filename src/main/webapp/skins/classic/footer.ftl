@@ -13,7 +13,7 @@
         <div class="fn-flex-1">
             <div class="footer-nav fn-clear">
                 <!--<a rel="help" href="${servePath}/about">${aboutLabel}</a>
-                <a href="https://hacpai.com/article/1457158841475">API</a>-->
+                <a href="http://183.224.44.44:8088/article/1457158841475">API</a>-->
                 <a href="${servePath}/tag/announcement">${symAnnouncementLabel}</a>
                 <a href="${servePath}/domains">${domainLabel}</a>
                 <a href="${servePath}/tags">${tagLabel}</a>
@@ -22,7 +22,7 @@
 
                 <div class="fn-right">
                     <span class="ft-gray">&COPY; ${year}</span>
-                   <!-- <a rel="copyright" href="https://hacpai.com" target="_blank">hacpai.com</a>-->
+                   <!-- <a rel="copyright" href="http://183.224.44.44:8088" target="_blank">hacpai.com</a>-->
                    <!-- ${visionLabel}</div>-->
             </div>
             <div class="fn-clear ft-smaller ft-fade">

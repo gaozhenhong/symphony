@@ -74,10 +74,10 @@ public class MarkdownsTestCase {
     @Test
     public void space() {
         if (!Markdowns.MARKED_AVAILABLE) {
-            final String md = "Sym是一个用Java写的实时论坛，欢迎来[体验Sym](https://hacpai.com)！";
+            final String md = "Sym是一个用Java写的实时论坛，欢迎来[体验Sym](http://183.224.44.44:8088)！";
             final String html = Markdowns.toHTML(md);
 
-            Assert.assertEquals(html, "<p>Sym 是一个用 Java 写的实时论坛，欢迎来<a href=\"https://hacpai.com\">体验 Sym</a>！</p>");
+            Assert.assertEquals(html, "<p>Sym 是一个用 Java 写的实时论坛，欢迎来<a href=\"http://183.224.44.44:8088\">体验 Sym</a>！</p>");
         }
     }
 
@@ -308,7 +308,7 @@ public class MarkdownsTestCase {
 
             final String html = Markdowns.toHTML(md);
 
-            Assert.assertEquals(html, "Content render failed, please <a href=\"https://hacpai.com/article/1438049659432\">report</a> this problem to help us enhance it, thank you &hearts;");
+            Assert.assertEquals(html, "Content render failed, please <a href=\"http://183.224.44.44:8088/article/1438049659432\">report</a> this problem to help us enhance it, thank you &hearts;");
         }
     }
 }

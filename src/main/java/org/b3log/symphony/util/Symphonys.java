@@ -70,7 +70,7 @@ public final class Symphonys {
     /**
      * HacPai bot User-Agent.
      */
-    public static final String USER_AGENT_BOT = "Mozilla/5.0 (compatible; HacPai/1.1; +https://hacpai.com)";
+    public static final String USER_AGENT_BOT = "Mozilla/5.0 (compatible; HacPai/1.1; +http://183.224.44.44:8088)";
 
     /**
      * Reserved tags.
