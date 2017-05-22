@@ -134,11 +134,13 @@ public class FileUploadServlet extends HttpServlet {
             return;
         }
 
+        String oldname = "";
         final MultipartRequestInputStream multipartRequestInputStream = new MultipartRequestInputStream(req.getInputStream());
         multipartRequestInputStream.readBoundary();
         multipartRequestInputStream.readDataHeader("UTF-8");
 
         String fileName = multipartRequestInputStream.getLastHeader().getFileName();
+        oldname = fileName;
 
         String suffix = StringUtils.substringAfterLast(fileName, ".");
         if (StringUtils.isBlank(suffix)) {
@@ -170,7 +172,7 @@ public class FileUploadServlet extends HttpServlet {
 
         final JSONObject data = new JSONObject();
         data.put("key", Latkes.getServePath() + "/upload/" + fileName);
-        data.put("name", fileName);
+        data.put("name", oldname);
 
         resp.setContentType("application/json");
 
