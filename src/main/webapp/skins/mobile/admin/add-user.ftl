@@ -16,10 +16,10 @@
 
                 <label>${passwordLabel}</label>
                 <input name="userPassword" type="text" />
-
-                <label><input name="userAppRole" type="radio" value="0" checked="checked" /> ${programmerLabel}&nbsp;&nbsp;</label>
+                <input name="userAppRole" type="hidden" value="0"/>
+                <!--<label><input name="userAppRole" type="radio" value="0" checked="checked" /> ${programmerLabel}&nbsp;&nbsp;</label>
                 <label><input name="userAppRole" type="radio" value="1" /> ${designerLabel}</label>
-
+                  -->
                 <br/><br/><br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>
